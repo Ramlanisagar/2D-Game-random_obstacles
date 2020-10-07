@@ -1,3 +1,7 @@
+// level increment
+// score incremet according to level
+// speed incremet according to level 
+
 function load_images_sound() 
 {
     enemy_image = new Image;
@@ -86,6 +90,7 @@ function init()
          h : 30,
          score : 0,
          lives : 3,
+         level : 0,
          gravity : 3,
     };
     
@@ -113,12 +118,20 @@ function draw()
     pen.fillStyle = "white";
     pen.font = "30px roboto";
     pen.fillText("Score : " + player.score,20,30);
+    pen.fillText("level : " + player.level,230,30);
     pen.fillText("lives : " + player.lives,480,30);
     
 }
 
 function update() 
 {
+    if(player.score > 30)
+        player.level = 3;
+    else if( player.score > 20)
+        player.level = 2;
+    else if (player.score > 10)
+        player.level = 1;
+    
     
     for( let i = 0; i < enemy.length; i++)
         {
@@ -136,7 +149,14 @@ function update()
     
     for(let i = 0; i < enemy.length ;i++)
     {
-                enemy[i].x -= 5;
+        if(player.level == 3)        
+            enemy[i].x -= 9;
+        else if(player.level == 2)
+            enemy[i].x -= 7;
+        else if(player.level == 1)
+            enemy[i].x -= 6;
+        else if(player.level == 0)
+            enemy[i].x -= 5;
     }
     
     if ( key == 38 && player.y > 0) {player.y -=7; }
@@ -156,9 +176,13 @@ function update()
     enemy[i].y = height + gap;
                     
     enemy[i+1].h = height;   
-    enemy[i+1].y = 0;  
+    enemy[i+1].y = 0;
                     
-    player.score +=2;                    
+    if(player.level<3)                
+    player.score +=2; 
+    else
+    player.score +=4;    
+        
                 }
     }
 }
